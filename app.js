@@ -57,6 +57,38 @@ const defaultAgents = [
     glow: "#9ba8ee",
     shadow: "rgba(83, 103, 207, 0.28)",
   },
+  {
+    name: "编程助手",
+    description: "代码、排错与技术方案",
+    url: "https://claude.ai/",
+    color: "#c56b45",
+    glow: "#edb092",
+    shadow: "rgba(197, 107, 69, 0.28)",
+  },
+  {
+    name: "运营策划",
+    description: "活动、增长与执行计划",
+    url: "https://gemini.google.com/",
+    color: "#3584e4",
+    glow: "#8dc0fa",
+    shadow: "rgba(53, 132, 228, 0.28)",
+  },
+  {
+    name: "生活顾问",
+    description: "日程、清单与生活建议",
+    url: "https://copilot.microsoft.com/",
+    color: "#1b9a8c",
+    glow: "#80d2c8",
+    shadow: "rgba(27, 154, 140, 0.28)",
+  },
+  {
+    name: "深度研究",
+    description: "搜索资料与整理来源",
+    url: "https://www.perplexity.ai/",
+    color: "#815ac0",
+    glow: "#bca1e7",
+    shadow: "rgba(129, 90, 192, 0.28)",
+  },
 ];
 
 const agentGrid = document.querySelector("#agentGrid");
@@ -78,7 +110,7 @@ if (window.matchMedia("(display-mode: standalone)").matches) {
 function loadAgents() {
   try {
     const stored = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    if (!Array.isArray(stored) || stored.length !== defaultAgents.length) {
+    if (!Array.isArray(stored)) {
       return structuredClone(defaultAgents);
     }
 

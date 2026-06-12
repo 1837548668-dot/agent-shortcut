@@ -1,4 +1,4 @@
-const CACHE_NAME = "agent-shortcut-v1";
+const CACHE_NAME = "agent-shortcut-v2";
 const APP_SHELL = [
   "./",
   "./index.html",

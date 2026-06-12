@@ -374,9 +374,6 @@ h2 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .agent-card:last-child {
-    grid-column: 2;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
