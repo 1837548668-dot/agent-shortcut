@@ -31,13 +31,16 @@ const agentPrompts = {
     "你是深度研究助手。围绕问题建立研究框架，拆分关键假设、证据需求、对立观点和结论。清楚区分已知信息与待核实信息。没有联网检索结果时不得伪造来源或声称看过具体资料。",
 };
 
+function isAllowedOrigin(origin) {
+  return (
+    origin === "https://1837548668-dot.github.io" ||
+    /^https:\/\/ai-planet-1837548668(?:-[a-z0-9-]+)?\.vercel\.app$/.test(origin)
+  );
+}
+
 function setCors(req, res) {
   const origin = req.headers.origin || "";
-  const allowed =
-    origin === "https://1837548668-dot.github.io" ||
-    /^https:\/\/ai-planet-1837548668(?:-[a-z0-9-]+)?\.vercel\.app$/.test(origin);
-
-  if (allowed) {
+  if (isAllowedOrigin(origin)) {
     res.setHeader("Access-Control-Allow-Origin", origin);
     res.setHeader("Vary", "Origin");
   }
@@ -128,11 +131,17 @@ module.exports = async function handler(req, res) {
   res.setHeader("Cache-Control", "no-store");
 
   if (req.method === "OPTIONS") {
-    return res.status(204).end();
+    return isAllowedOrigin(req.headers.origin || "")
+      ? res.status(204).end()
+      : res.status(403).json({ error: "来源不允许" });
   }
 
   if (req.method !== "POST") {
     return res.status(405).json({ error: "仅支持 POST 请求" });
+  }
+
+  if (process.env.VERCEL && !isAllowedOrigin(req.headers.origin || "")) {
+    return res.status(403).json({ error: "来源不允许" });
   }
 
   if (!process.env.XAI_API_KEY) {

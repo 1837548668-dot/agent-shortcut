@@ -1,4 +1,5 @@
 const AGENT_STORAGE_KEY = "ai-planet-agents-v2";
+const LEGACY_AGENT_STORAGE_KEY = "agent-shortcut-items-v1";
 const CHAT_STORAGE_KEY = "ai-planet-chats-v1";
 const API_ENDPOINT = window.location.hostname === "1837548668-dot.github.io"
   ? "https://ai-planet-1837548668.vercel.app/api/chat"
@@ -192,7 +193,8 @@ function createIcon(index) {
 
 function loadAgents() {
   try {
-    const stored = JSON.parse(localStorage.getItem(AGENT_STORAGE_KEY));
+    const current = localStorage.getItem(AGENT_STORAGE_KEY);
+    const stored = JSON.parse(current || localStorage.getItem(LEGACY_AGENT_STORAGE_KEY));
     if (!Array.isArray(stored)) {
       return structuredClone(defaultAgents);
     }
