@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f4f7fb" />
+    <meta name="description" content="一个适合添加到安卓手机主屏幕的智能体快捷导航。" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" href="./icons/app-icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="./icons/app-icon.svg" />
+    <link rel="stylesheet" href="./styles.css" />
+    <title>我的智能体</title>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">AI AGENTS</p>
+          <h1>我的智能体</h1>
+          <p class="subtitle">选择一个智能体，立即开始</p>
+        </div>
+        <button class="icon-button" id="editButton" type="button" aria-label="编辑智能体">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M13.5 6.5 17.5 10.5M4 20l4.2-.8L19 8.4a2.8 2.8 0 0 0-4-4L4.4 15.1 4 20Z" />
+          </svg>
+        </button>
+      </header>
+
+      <section class="agent-grid" id="agentGrid" aria-label="智能体列表"></section>
+
+      <button class="install-button" id="installButton" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 3v12m0 0 4-4m-4 4-4-4M5 19h14" />
+        </svg>
+        添加到手机主屏幕
+      </button>
+
+      <p class="footer-tip">点击卡片即可跳转 · 右上角可修改名称和网址</p>
+    </main>
+
+    <dialog class="edit-dialog" id="editDialog">
+      <form method="dialog" id="editForm">
+        <div class="dialog-header">
+          <div>
+            <p class="eyebrow">SETTINGS</p>
+            <h2>编辑智能体</h2>
+          </div>
+          <button class="close-button" value="cancel" aria-label="关闭" type="submit">×</button>
+        </div>
+
+        <div class="edit-list" id="editList"></div>
+
+        <div class="dialog-actions">
+          <button class="secondary-button" id="resetButton" type="button">恢复示例</button>
+          <button class="primary-button" value="default" type="submit">保存修改</button>
+        </div>
+      </form>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
