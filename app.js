@@ -1,5 +1,19 @@
 const STORAGE_KEY = "agent-shortcut-items-v1";
 
+const iconTemplates = [
+  '<path d="m12 3 1.5 4.2L18 9l-4.5 1.8L12 15l-1.5-4.2L6 9l4.5-1.8L12 3Z"/><path d="m18.5 15 .8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8.8-2.2Z"/>',
+  '<path d="m4 20 4.2-1 10.6-10.6a2.8 2.8 0 0 0-4-4L4.2 15 4 20Z"/><path d="m13 6 4 4"/>',
+  '<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H11v16H6.5A2.5 2.5 0 0 0 4 21.5v-16ZM20 5.5A2.5 2.5 0 0 0 17.5 3H13v16h4.5a2.5 2.5 0 0 1 2.5 2.5v-16Z"/>',
+  '<path d="M4 19V9m5 10V5m5 14v-7m5 7V3"/><path d="M3 21h18"/>',
+  '<path d="M7 4h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/><path d="M8 8h8M8 12h8M8 16h5"/>',
+  '<rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="m5 17 4-4 3 3 2-2 5 4"/>',
+  '<path d="M4 5h7M7.5 3v2c0 5-2 8-5 10M5 9c1.5 2.5 3.5 4.3 6 5.5M14 19l3-9 3 9M15 16h4"/>',
+  '<path d="m8 8-4 4 4 4M16 8l4 4-4 4M14 4l-4 16"/>',
+  '<circle cx="12" cy="12" r="8"/><path d="m15.5 8.5-2 5-5 2 2-5 5-2Z"/>',
+  '<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/>',
+  '<circle cx="11" cy="11" r="7"/><path d="m16 16 5 5M8 11h6M11 8v6"/>',
+];
+
 const defaultAgents = [
   {
     name: "全能问答",
@@ -98,13 +112,23 @@ const editForm = document.querySelector("#editForm");
 const editList = document.querySelector("#editList");
 const resetButton = document.querySelector("#resetButton");
 const installButton = document.querySelector("#installButton");
+const installPanel = document.querySelector("#installPanel");
+const agentCount = document.querySelector("#agentCount");
 const toast = document.querySelector("#toast");
 
 let deferredInstallPrompt = null;
 let agents = loadAgents();
 
 if (window.matchMedia("(display-mode: standalone)").matches) {
-  installButton.hidden = true;
+  installPanel.hidden = true;
+}
+
+function createIcon(index) {
+  const icon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  icon.setAttribute("viewBox", "0 0 24 24");
+  icon.setAttribute("aria-hidden", "true");
+  icon.innerHTML = iconTemplates[index % iconTemplates.length];
+  return icon;
 }
 
 function loadAgents() {
@@ -125,26 +149,47 @@ function loadAgents() {
 }
 
 function renderAgents() {
+  agentCount.textContent = `${agents.length} 个智能体已就绪`;
+
   agentGrid.replaceChildren(
     ...agents.map((agent, index) => {
       const link = document.createElement("a");
-      link.className = "agent-card";
+      link.className = index === 0 ? "agent-card agent-card--featured" : "agent-card";
       link.href = agent.url;
       link.target = "_blank";
       link.rel = "noopener noreferrer";
+      link.style.setProperty("--index", index);
       link.style.setProperty("--accent", agent.color);
       link.style.setProperty("--glow", agent.glow);
       link.style.setProperty("--icon-shadow", agent.shadow);
       link.setAttribute("aria-label", `打开${agent.name}`);
 
+      const top = document.createElement("span");
+      top.className = "agent-top";
+
       const icon = document.createElement("span");
       icon.className = "agent-icon";
-      icon.textContent = agent.name.trim().slice(0, 1) || String(index + 1);
+      icon.append(createIcon(index));
+
+      const arrow = document.createElement("span");
+      arrow.className = "launch-arrow";
+      arrow.setAttribute("aria-hidden", "true");
+      arrow.innerHTML =
+        '<svg viewBox="0 0 24 24"><path d="M8 16 16 8M9 8h7v7"/></svg>';
+      top.append(icon, arrow);
 
       const bottom = document.createElement("span");
       bottom.className = "agent-bottom";
 
       const text = document.createElement("span");
+      text.className = "agent-copy";
+      if (index === 0) {
+        const featuredLabel = document.createElement("span");
+        featuredLabel.className = "featured-label";
+        featuredLabel.textContent = "PRIMARY AGENT";
+        text.append(featuredLabel);
+      }
+
       const name = document.createElement("span");
       const description = document.createElement("span");
       name.className = "agent-name";
@@ -153,13 +198,8 @@ function renderAgents() {
       description.textContent = agent.description;
       text.append(name, description);
 
-      const arrow = document.createElement("span");
-      arrow.className = "arrow";
-      arrow.setAttribute("aria-hidden", "true");
-      arrow.textContent = "↗";
-
-      bottom.append(text, arrow);
-      link.append(icon, bottom);
+      bottom.append(text);
+      link.append(top, bottom);
       return link;
     }),
   );
@@ -170,10 +210,21 @@ function renderEditor() {
     ...agents.map((agent, index) => {
       const item = document.createElement("section");
       item.className = "edit-item";
+      item.style.setProperty("--accent", agent.color);
+      item.style.setProperty("--glow", agent.glow);
+      item.style.setProperty("--icon-shadow", agent.shadow);
+
+      const itemHeader = document.createElement("div");
+      itemHeader.className = "edit-item-header";
+
+      const itemIcon = document.createElement("span");
+      itemIcon.className = "edit-item-icon";
+      itemIcon.append(createIcon(index));
 
       const title = document.createElement("p");
       title.className = "edit-item-title";
-      title.textContent = `智能体 ${index + 1}`;
+      title.textContent = `智能体 ${String(index + 1).padStart(2, "0")}`;
+      itemHeader.append(itemIcon, title);
 
       const nameLabel = document.createElement("label");
       nameLabel.className = "field";
@@ -199,7 +250,7 @@ function renderEditor() {
       urlInput.required = true;
       urlLabel.append(urlCaption, urlInput);
 
-      item.append(title, nameLabel, urlLabel);
+      item.append(itemHeader, nameLabel, urlLabel);
       return item;
     }),
   );
@@ -264,7 +315,7 @@ resetButton.addEventListener("click", () => {
 window.addEventListener("beforeinstallprompt", (event) => {
   event.preventDefault();
   deferredInstallPrompt = event;
-  installButton.hidden = false;
+  installPanel.hidden = false;
 });
 
 installButton.addEventListener("click", async () => {
@@ -276,11 +327,11 @@ installButton.addEventListener("click", async () => {
   deferredInstallPrompt.prompt();
   await deferredInstallPrompt.userChoice;
   deferredInstallPrompt = null;
-  installButton.hidden = true;
+  installPanel.hidden = true;
 });
 
 window.addEventListener("appinstalled", () => {
-  installButton.hidden = true;
+  installPanel.hidden = true;
   showToast("已添加到主屏幕");
 });
 
