@@ -113,14 +113,32 @@ const editList = document.querySelector("#editList");
 const resetButton = document.querySelector("#resetButton");
 const installButton = document.querySelector("#installButton");
 const installPanel = document.querySelector("#installPanel");
+const installTitle = document.querySelector("#installTitle");
+const installDescription = document.querySelector("#installDescription");
 const agentCount = document.querySelector("#agentCount");
 const toast = document.querySelector("#toast");
 
 let deferredInstallPrompt = null;
 let agents = loadAgents();
+const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+  (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+const isAndroid = /Android/i.test(navigator.userAgent);
+const isDesktop = !isIOS && !isAndroid && !("ontouchstart" in window);
 
-if (window.matchMedia("(display-mode: standalone)").matches) {
+if (window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true) {
   installPanel.hidden = true;
+} else if (isIOS) {
+  installTitle.textContent = "添加到 iPad 主屏幕";
+  installDescription.textContent = "点击 Safari 分享按钮，再选择“添加到主屏幕”";
+  installButton.textContent = "查看方法";
+} else if (isAndroid) {
+  installTitle.textContent = "添加到安卓桌面";
+  installDescription.textContent = "像 App 一样全屏打开，手机和平板通用";
+  installButton.textContent = "添加";
+} else if (isDesktop) {
+  installTitle.textContent = "安装到电脑";
+  installDescription.textContent = "固定到桌面或任务栏，随时快速打开";
+  installButton.textContent = "安装";
 }
 
 function createIcon(index) {
@@ -319,8 +337,17 @@ window.addEventListener("beforeinstallprompt", (event) => {
 });
 
 installButton.addEventListener("click", async () => {
+  if (isIOS) {
+    showToast("Safari：点分享按钮，再选“添加到主屏幕”");
+    return;
+  }
+
   if (!deferredInstallPrompt) {
-    showToast("请在浏览器菜单中选择“添加到主屏幕”");
+    showToast(
+      isDesktop
+        ? "请在浏览器地址栏或菜单中选择“安装应用”"
+        : "请在浏览器菜单中选择“添加到主屏幕”",
+    );
     return;
   }
 

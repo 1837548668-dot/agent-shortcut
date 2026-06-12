@@ -1,12 +1,14 @@
-const CACHE_NAME = "ai-planet-v4";
+const CACHE_NAME = "ai-planet-v5";
 const APP_SHELL = [
   "./",
   "./index.html",
   "./styles.css",
   "./app.js",
   "./manifest.webmanifest",
+  "./icons/ai-planet-180.png",
   "./icons/ai-planet-192.png",
   "./icons/ai-planet-512.png",
+  "./icons/ai-planet-maskable-512.png",
   "./icons/ai-planet-original.png",
 ];
 
