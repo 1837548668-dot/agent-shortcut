@@ -1,13 +1,13 @@
-const CACHE_NAME = "agent-shortcut-v3";
+const CACHE_NAME = "ai-planet-v4";
 const APP_SHELL = [
   "./",
   "./index.html",
   "./styles.css",
   "./app.js",
   "./manifest.webmanifest",
-  "./icons/app-icon-192.png",
-  "./icons/app-icon-512.png",
-  "./icons/app-icon.svg",
+  "./icons/ai-planet-192.png",
+  "./icons/ai-planet-512.png",
+  "./icons/ai-planet-original.png",
 ];
 
 self.addEventListener("install", (event) => {
