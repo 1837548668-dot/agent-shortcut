@@ -1,9 +1,4 @@
-const AGENT_STORAGE_KEY = "ai-planet-agents-v2";
-const LEGACY_AGENT_STORAGE_KEY = "agent-shortcut-items-v1";
-const CHAT_STORAGE_KEY = "ai-planet-chats-v1";
-const API_ENDPOINT = window.location.hostname === "1837548668-dot.github.io"
-  ? "https://ai-planet-1837548668.vercel.app/api/chat"
-  : "/api/chat";
+const STORAGE_KEY = "agent-shortcut-items-v1";
 
 const iconTemplates = [
   '<path d="m12 3 1.5 4.2L18 9l-4.5 1.8L12 15l-1.5-4.2L6 9l4.5-1.8L12 3Z"/><path d="m18.5 15 .8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8.8-2.2Z"/>',
@@ -21,118 +16,95 @@ const iconTemplates = [
 
 const defaultAgents = [
   {
-    id: "general",
     name: "全能问答",
     description: "日常问题与灵感",
-    welcome: "你好，我是全能问答。无论是工作、生活还是突然冒出的想法，都可以直接告诉我。",
-    suggestions: ["帮我梳理今天的任务", "解释一个复杂概念", "给我一些新点子"],
+    url: "https://chatgpt.com/",
     color: "#4f7cff",
     glow: "#8eabff",
     shadow: "rgba(79, 124, 255, 0.32)",
   },
   {
-    id: "copywriter",
     name: "文案助手",
     description: "文章、标题与脚本",
-    welcome: "把产品、主题和受众告诉我，我可以帮你写标题、文章、短视频脚本和营销文案。",
-    suggestions: ["写一条朋友圈文案", "优化这段产品介绍", "生成一个短视频脚本"],
+    url: "https://www.doubao.com/chat/",
     color: "#8b67ed",
     glow: "#bba6f8",
     shadow: "rgba(139, 103, 237, 0.3)",
   },
   {
-    id: "learning",
     name: "学习教练",
     description: "解释知识与学习计划",
-    welcome: "我是你的学习教练。我会用容易理解的方式讲清知识，并帮你制定可以执行的学习计划。",
-    suggestions: ["用简单的话解释一个知识点", "制定七天学习计划", "帮我出几道练习题"],
+    url: "https://www.kimi.com/zh",
     color: "#12a594",
     glow: "#7ad9ce",
     shadow: "rgba(18, 165, 148, 0.28)",
   },
   {
-    id: "analyst",
     name: "数据分析",
     description: "表格、数据与结论",
-    welcome: "请把数据、指标或业务问题发给我。我会帮你梳理分析思路、发现趋势并给出结论。",
-    suggestions: ["设计一套分析指标", "解读一组销售数据", "帮我找出问题原因"],
+    url: "https://www.qianwen.com/",
     color: "#ec7c42",
     glow: "#ffc09c",
     shadow: "rgba(236, 124, 66, 0.28)",
   },
   {
-    id: "meeting",
     name: "会议总结",
     description: "整理记录与行动项",
-    welcome: "把会议记录粘贴过来，我会整理核心结论、待办事项、负责人和时间节点。",
-    suggestions: ["整理这份会议记录", "提取待办事项", "生成会议纪要模板"],
+    url: "https://yiyan.baidu.com/",
     color: "#3779c8",
     glow: "#91c5fb",
     shadow: "rgba(55, 121, 200, 0.28)",
   },
   {
-    id: "visual",
     name: "图片创意",
     description: "视觉灵感与提示词",
-    welcome: "告诉我你想制作的画面，我会帮你设计视觉方向，并生成清晰可用的图片提示词。",
-    suggestions: ["设计一张高级海报", "生成产品摄影提示词", "给我三个视觉创意"],
+    url: "https://yuanbao.tencent.com/",
     color: "#e55d83",
     glow: "#f5a5ba",
     shadow: "rgba(229, 93, 131, 0.28)",
   },
   {
-    id: "translator",
     name: "翻译专家",
     description: "多语言翻译与润色",
-    welcome: "把需要翻译的内容和目标语言发给我。我会兼顾准确、自然和具体使用场景。",
-    suggestions: ["翻译成自然英文", "润色这段中文", "做中英双语版本"],
+    url: "https://chat.deepseek.com/",
     color: "#5367cf",
     glow: "#9ba8ee",
     shadow: "rgba(83, 103, 207, 0.28)",
   },
   {
-    id: "developer",
     name: "编程助手",
     description: "代码、排错与技术方案",
-    welcome: "把代码、报错或想实现的功能发给我。我会先定位问题，再给出可执行的解决方案。",
-    suggestions: ["帮我分析这段报错", "写一个简单程序", "评审一个技术方案"],
+    url: "https://claude.ai/",
     color: "#c56b45",
     glow: "#edb092",
     shadow: "rgba(197, 107, 69, 0.28)",
   },
   {
-    id: "operations",
     name: "运营策划",
     description: "活动、增长与执行计划",
-    welcome: "告诉我业务目标、用户和资源情况，我会帮你拆解运营策略、活动方案和执行节奏。",
-    suggestions: ["策划一次拉新活动", "制定月度运营计划", "分析用户增长问题"],
+    url: "https://gemini.google.com/",
     color: "#3584e4",
     glow: "#8dc0fa",
     shadow: "rgba(53, 132, 228, 0.28)",
   },
   {
-    id: "life",
     name: "生活顾问",
     description: "日程、清单与生活建议",
-    welcome: "我可以帮你规划日程、整理清单、比较选择，让日常生活更轻松有序。",
-    suggestions: ["规划我的周末", "整理旅行清单", "帮我比较两个选择"],
+    url: "https://copilot.microsoft.com/",
     color: "#1b9a8c",
     glow: "#80d2c8",
     shadow: "rgba(27, 154, 140, 0.28)",
   },
   {
-    id: "research",
     name: "深度研究",
-    description: "研究框架与资料整理",
-    welcome: "告诉我研究主题和最终用途，我会帮你建立框架、梳理关键问题并形成结构化结论。",
-    suggestions: ["建立一个研究框架", "比较两个行业趋势", "整理一份调研提纲"],
+    description: "搜索资料与整理来源",
+    url: "https://www.perplexity.ai/",
     color: "#815ac0",
     glow: "#bca1e7",
     shadow: "rgba(129, 90, 192, 0.28)",
   },
 ];
 
-const homeView = document.querySelector("#homeView");
 const agentGrid = document.querySelector("#agentGrid");
 const editButton = document.querySelector("#editButton");
 const editDialog = document.querySelector("#editDialog");
@@ -145,23 +117,9 @@ const installTitle = document.querySelector("#installTitle");
 const installDescription = document.querySelector("#installDescription");
 const agentCount = document.querySelector("#agentCount");
 const toast = document.querySelector("#toast");
-const chatView = document.querySelector("#chatView");
-const chatBackButton = document.querySelector("#chatBackButton");
-const clearChatButton = document.querySelector("#clearChatButton");
-const chatAgentIcon = document.querySelector("#chatAgentIcon");
-const chatAgentName = document.querySelector("#chatAgentName");
-const chatMessages = document.querySelector("#chatMessages");
-const chatSuggestions = document.querySelector("#chatSuggestions");
-const chatForm = document.querySelector("#chatForm");
-const chatInput = document.querySelector("#chatInput");
-const sendButton = document.querySelector("#sendButton");
 
 let deferredInstallPrompt = null;
 let agents = loadAgents();
-let chatHistories = loadChatHistories();
-let activeAgentId = null;
-let isSending = false;
-
 const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
   (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
 const isAndroid = /Android/i.test(navigator.userAgent);
@@ -193,8 +151,7 @@ function createIcon(index) {
 
 function loadAgents() {
   try {
-    const current = localStorage.getItem(AGENT_STORAGE_KEY);
-    const stored = JSON.parse(current || localStorage.getItem(LEGACY_AGENT_STORAGE_KEY));
+    const stored = JSON.parse(localStorage.getItem(STORAGE_KEY));
     if (!Array.isArray(stored)) {
       return structuredClone(defaultAgents);
     }
@@ -202,31 +159,11 @@ function loadAgents() {
     return defaultAgents.map((defaultAgent, index) => ({
       ...defaultAgent,
       name: stored[index]?.name || defaultAgent.name,
+      url: stored[index]?.url || defaultAgent.url,
     }));
   } catch {
     return structuredClone(defaultAgents);
   }
-}
-
-function loadChatHistories() {
-  try {
-    const stored = JSON.parse(localStorage.getItem(CHAT_STORAGE_KEY));
-    return stored && typeof stored === "object" ? stored : {};
-  } catch {
-    return {};
-  }
-}
-
-function saveChatHistories() {
-  localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(chatHistories));
-}
-
-function getAgentIndex(agentId) {
-  return agents.findIndex((agent) => agent.id === agentId);
-}
-
-function getActiveAgent() {
-  return agents.find((agent) => agent.id === activeAgentId);
 }
 
 function renderAgents() {
@@ -234,15 +171,16 @@ function renderAgents() {
 
   agentGrid.replaceChildren(
     ...agents.map((agent, index) => {
-      const button = document.createElement("button");
-      button.className = index === 0 ? "agent-card agent-card--featured" : "agent-card";
-      button.type = "button";
-      button.style.setProperty("--index", index);
-      button.style.setProperty("--accent", agent.color);
-      button.style.setProperty("--glow", agent.glow);
-      button.style.setProperty("--icon-shadow", agent.shadow);
-      button.setAttribute("aria-label", `与${agent.name}对话`);
-      button.addEventListener("click", () => openChat(agent.id));
+      const link = document.createElement("a");
+      link.className = index === 0 ? "agent-card agent-card--featured" : "agent-card";
+      link.href = agent.url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.style.setProperty("--index", index);
+      link.style.setProperty("--accent", agent.color);
+      link.style.setProperty("--glow", agent.glow);
+      link.style.setProperty("--icon-shadow", agent.shadow);
+      link.setAttribute("aria-label", `打开${agent.name}`);
 
       const top = document.createElement("span");
       top.className = "agent-top";
@@ -260,9 +198,9 @@ function renderAgents() {
 
       const bottom = document.createElement("span");
       bottom.className = "agent-bottom";
+
       const text = document.createElement("span");
       text.className = "agent-copy";
-
       if (index === 0) {
         const featuredLabel = document.createElement("span");
         featuredLabel.className = "featured-label";
@@ -277,9 +215,10 @@ function renderAgents() {
       name.textContent = agent.name;
       description.textContent = agent.description;
       text.append(name, description);
+
       bottom.append(text);
-      button.append(top, bottom);
-      return button;
+      link.append(top, bottom);
+      return link;
     }),
   );
 }
@@ -295,18 +234,15 @@ function renderEditor() {
 
       const itemHeader = document.createElement("div");
       itemHeader.className = "edit-item-header";
+
       const itemIcon = document.createElement("span");
       itemIcon.className = "edit-item-icon";
       itemIcon.append(createIcon(index));
 
-      const heading = document.createElement("span");
       const title = document.createElement("p");
-      const description = document.createElement("small");
       title.className = "edit-item-title";
       title.textContent = `智能体 ${String(index + 1).padStart(2, "0")}`;
-      description.textContent = agent.description;
-      heading.append(title, description);
-      itemHeader.append(itemIcon, heading);
+      itemHeader.append(itemIcon, title);
 
       const nameLabel = document.createElement("label");
       nameLabel.className = "field";
@@ -318,159 +254,30 @@ function renderEditor() {
       nameInput.maxLength = 18;
       nameInput.required = true;
       nameLabel.append(nameCaption, nameInput);
-      item.append(itemHeader, nameLabel);
+
+      const urlLabel = document.createElement("label");
+      urlLabel.className = "field";
+      const urlCaption = document.createElement("span");
+      urlCaption.textContent = "跳转网址";
+      const urlInput = document.createElement("input");
+      urlInput.name = `url-${index}`;
+      urlInput.type = "url";
+      urlInput.inputMode = "url";
+      urlInput.value = agent.url;
+      urlInput.placeholder = "https://...";
+      urlInput.required = true;
+      urlLabel.append(urlCaption, urlInput);
+
+      item.append(itemHeader, nameLabel, urlLabel);
       return item;
     }),
   );
 }
 
-function createMessage(role, content, options = {}) {
-  const row = document.createElement("div");
-  row.className = `message-row message-row--${role}`;
-
-  if (role === "assistant") {
-    const index = getAgentIndex(activeAgentId);
-    const avatar = document.createElement("span");
-    avatar.className = "message-avatar";
-    avatar.append(createIcon(Math.max(index, 0)));
-    row.append(avatar);
-  }
-
-  const bubble = document.createElement("div");
-  bubble.className = "message-bubble";
-  if (options.loading) {
-    bubble.classList.add("message-bubble--loading");
-    bubble.innerHTML = "<i></i><i></i><i></i>";
-  } else {
-    bubble.textContent = content;
-  }
-  row.append(bubble);
-  return row;
-}
-
-function renderChat() {
-  const agent = getActiveAgent();
-  if (!agent) return;
-
-  const index = getAgentIndex(agent.id);
-  chatAgentName.textContent = agent.name;
-  chatAgentIcon.replaceChildren(createIcon(index));
-  chatAgentIcon.style.setProperty("--accent", agent.color);
-  chatAgentIcon.style.setProperty("--glow", agent.glow);
-  chatAgentIcon.style.setProperty("--icon-shadow", agent.shadow);
-
-  const history = chatHistories[agent.id] || [];
-  const nodes = [createMessage("assistant", agent.welcome)];
-  history.forEach((message) => nodes.push(createMessage(message.role, message.content)));
-  if (isSending) nodes.push(createMessage("assistant", "", { loading: true }));
-  chatMessages.replaceChildren(...nodes);
-
-  chatSuggestions.replaceChildren(
-    ...agent.suggestions.map((suggestion) => {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.textContent = suggestion;
-      button.addEventListener("click", () => {
-        chatInput.value = suggestion;
-        resizeTextarea();
-        chatInput.focus();
-      });
-      return button;
-    }),
-  );
-
-  requestAnimationFrame(() => {
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-  });
-}
-
-function openChat(agentId) {
-  activeAgentId = agentId;
-  homeView.hidden = true;
-  chatView.hidden = false;
-  document.body.classList.add("chat-open");
-  renderChat();
-  window.scrollTo(0, 0);
-  window.history.pushState({ chat: agentId }, "", `#${agentId}`);
-  setTimeout(() => chatInput.focus(), 150);
-}
-
-function closeChat({ updateHistory = true } = {}) {
-  activeAgentId = null;
-  chatView.hidden = true;
-  homeView.hidden = false;
-  document.body.classList.remove("chat-open");
-  chatInput.value = "";
-  resizeTextarea();
-  if (updateHistory && window.location.hash) {
-    window.history.pushState({}, "", window.location.pathname + window.location.search);
-  }
-}
-
-function clearActiveChat() {
-  const agent = getActiveAgent();
-  if (!agent) return;
-  chatHistories[agent.id] = [];
-  saveChatHistories();
-  renderChat();
-  showToast("已开始新对话");
-}
-
-function resizeTextarea() {
-  chatInput.style.height = "auto";
-  chatInput.style.height = `${Math.min(chatInput.scrollHeight, 140)}px`;
-}
-
-async function sendMessage(text) {
-  const agent = getActiveAgent();
-  if (!agent || isSending) return;
-
-  const history = chatHistories[agent.id] || [];
-  history.push({ role: "user", content: text });
-  chatHistories[agent.id] = history;
-  saveChatHistories();
-
-  isSending = true;
-  sendButton.disabled = true;
-  chatInput.disabled = true;
-  renderChat();
-
-  try {
-    const response = await fetch(API_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        agentId: agent.id,
-        messages: history.slice(-16).map(({ role, content }) => ({ role, content })),
-      }),
-    });
-
-    const data = await response.json().catch(() => ({}));
-    if (!response.ok) {
-      throw new Error(data.error || "智能体暂时无法回复");
-    }
-
-    history.push({ role: "assistant", content: data.reply });
-    saveChatHistories();
-  } catch (error) {
-    history.push({
-      role: "assistant",
-      content: `连接失败：${error.message || "请稍后再试"}`,
-    });
-    saveChatHistories();
-  } finally {
-    isSending = false;
-    sendButton.disabled = false;
-    chatInput.disabled = false;
-    renderChat();
-    chatInput.focus();
-  }
-}
-
 function showToast(message) {
   toast.textContent = message;
   toast.classList.add("is-visible");
-  window.setTimeout(() => toast.classList.remove("is-visible"), 2200);
+  window.setTimeout(() => toast.classList.remove("is-visible"), 1800);
 }
 
 editButton.addEventListener("click", () => {
@@ -479,17 +286,36 @@ editButton.addEventListener("click", () => {
 });
 
 editForm.addEventListener("submit", (event) => {
-  if (event.submitter?.value === "cancel") return;
+  if (event.submitter?.value === "cancel") {
+    return;
+  }
 
   event.preventDefault();
   const formData = new FormData(editForm);
-  agents = agents.map((agent, index) => ({
+  const nextAgents = agents.map((agent, index) => ({
     ...agent,
     name: String(formData.get(`name-${index}`) || "").trim(),
+    url: String(formData.get(`url-${index}`) || "").trim(),
   }));
+
+  const hasInvalidUrl = nextAgents.some((agent) => {
+    try {
+      const parsed = new URL(agent.url);
+      return !["http:", "https:"].includes(parsed.protocol);
+    } catch {
+      return true;
+    }
+  });
+
+  if (hasInvalidUrl) {
+    showToast("请填写以 http:// 或 https:// 开头的网址");
+    return;
+  }
+
+  agents = nextAgents;
   localStorage.setItem(
-    AGENT_STORAGE_KEY,
-    JSON.stringify(agents.map(({ id, name }) => ({ id, name }))),
+    STORAGE_KEY,
+    JSON.stringify(agents.map(({ name, url }) => ({ name, url }))),
   );
   renderAgents();
   editDialog.close();
@@ -498,34 +324,10 @@ editForm.addEventListener("submit", (event) => {
 
 resetButton.addEventListener("click", () => {
   agents = structuredClone(defaultAgents);
-  localStorage.removeItem(AGENT_STORAGE_KEY);
+  localStorage.removeItem(STORAGE_KEY);
   renderEditor();
   renderAgents();
-  showToast("已恢复默认名称");
-});
-
-chatBackButton.addEventListener("click", () => closeChat());
-clearChatButton.addEventListener("click", clearActiveChat);
-
-chatForm.addEventListener("submit", (event) => {
-  event.preventDefault();
-  const text = chatInput.value.trim();
-  if (!text) return;
-  chatInput.value = "";
-  resizeTextarea();
-  sendMessage(text);
-});
-
-chatInput.addEventListener("input", resizeTextarea);
-chatInput.addEventListener("keydown", (event) => {
-  if (event.key === "Enter" && !event.shiftKey && !event.isComposing) {
-    event.preventDefault();
-    chatForm.requestSubmit();
-  }
-});
-
-window.addEventListener("popstate", () => {
-  if (activeAgentId) closeChat({ updateHistory: false });
+  showToast("已恢复示例");
 });
 
 window.addEventListener("beforeinstallprompt", (event) => {
@@ -557,18 +359,15 @@ installButton.addEventListener("click", async () => {
 
 window.addEventListener("appinstalled", () => {
   installPanel.hidden = true;
-  showToast("AI星球已安装");
+  showToast("已添加到主屏幕");
 });
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./sw.js").catch(() => {});
+    navigator.serviceWorker.register("./sw.js").catch(() => {
+      // The page still works as a normal shortcut if service worker registration fails.
+    });
   });
 }
 
 renderAgents();
-
-const initialAgentId = window.location.hash.slice(1);
-if (agents.some((agent) => agent.id === initialAgentId)) {
-  openChat(initialAgentId);
-}
