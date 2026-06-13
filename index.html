@@ -17,6 +17,14 @@
   </head>
   <body>
     <main class="app-shell">
+      <button class="manage-button" type="button" data-edit-agents>
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 20h9" />
+          <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4L16.5 3.5Z" />
+        </svg>
+        <span>编辑网址</span>
+      </button>
+
       <header class="brand-hero">
         <img class="brand-icon" src="./icons/ai-planet-192.png" alt="AI星球" />
         <h1><span>AI</span> 星球</h1>
@@ -51,7 +59,7 @@
 
       <footer class="page-footer">
         <p>AI 星球 <i></i> 点击任意智能体将在浏览器中打开</p>
-        <button class="edit-button" id="editButton" type="button">编辑名称与网址</button>
+        <button class="edit-button" type="button" data-edit-agents>管理智能体名称与网址</button>
       </footer>
     </main>
 
@@ -62,7 +70,7 @@
           <div>
             <span class="dialog-kicker">AI PLANET</span>
             <h2>管理智能体</h2>
-            <p>名称和网址仅保存在当前设备</p>
+            <p>修改名称或完整网址，保存后立即生效</p>
           </div>
           <button class="close-button" value="cancel" aria-label="关闭" type="submit">×</button>
         </div>

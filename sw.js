@@ -1,4 +1,4 @@
-const CACHE_NAME = "ai-planet-v8";
+const CACHE_NAME = "ai-planet-v9";
 const APP_SHELL = [
   "./",
   "./index.html",
