@@ -20,7 +20,7 @@ const coreList = document.querySelector("#coreList");
 const specialList = document.querySelector("#specialList");
 const coreCount = document.querySelector("#coreCount");
 const specialCount = document.querySelector("#specialCount");
-const editButton = document.querySelector("#editButton");
+const editButtons = document.querySelectorAll("[data-edit-agents]");
 const editDialog = document.querySelector("#editDialog");
 const editForm = document.querySelector("#editForm");
 const editList = document.querySelector("#editList");
@@ -152,6 +152,9 @@ function renderEditor() {
       urlInput.name = `url-${index}`;
       urlInput.type = "url";
       urlInput.inputMode = "url";
+      urlInput.autocapitalize = "off";
+      urlInput.autocomplete = "url";
+      urlInput.spellcheck = false;
       urlInput.value = agent.url;
       urlInput.placeholder = "https://...";
       urlInput.required = true;
@@ -169,9 +172,11 @@ function showToast(message) {
   window.setTimeout(() => toast.classList.remove("is-visible"), 1800);
 }
 
-editButton.addEventListener("click", () => {
-  renderEditor();
-  editDialog.showModal();
+editButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    renderEditor();
+    editDialog.showModal();
+  });
 });
 
 editForm.addEventListener("submit", (event) => {
@@ -208,7 +213,7 @@ editForm.addEventListener("submit", (event) => {
   );
   renderAgents();
   editDialog.close();
-  showToast("已保存");
+  showToast("网址已保存，点击卡片即可打开");
 });
 
 resetButton.addEventListener("click", () => {

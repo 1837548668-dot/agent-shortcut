@@ -44,6 +44,7 @@ a {
 }
 
 .app-shell {
+  position: relative;
   width: min(100%, 600px);
   min-height: 100vh;
   margin: 0 auto;
@@ -52,6 +53,38 @@ a {
     24px
     max(36px, env(safe-area-inset-bottom));
   background: #fff;
+}
+
+.manage-button {
+  position: absolute;
+  z-index: 3;
+  top: max(18px, env(safe-area-inset-top));
+  right: 24px;
+  display: inline-flex;
+  min-height: 38px;
+  align-items: center;
+  gap: 6px;
+  padding: 0 13px;
+  border: 1px solid #e2e7ee;
+  border-radius: 999px;
+  color: #53647d;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 8px 24px rgba(20, 35, 61, 0.08);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 650;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.manage-button svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
 }
 
 .brand-hero {
@@ -522,6 +555,12 @@ a {
     color: #68778d;
   }
 
+  .manage-button:hover {
+    border-color: #d0d8e3;
+    color: #203454;
+    transform: translateY(-1px);
+  }
+
   .install-button:hover {
     background: #203454;
   }
@@ -576,7 +615,12 @@ a {
     padding-left: 18px;
   }
 
+  .manage-button {
+    right: 18px;
+  }
+
   .brand-hero {
+    padding-top: 28px;
     padding-bottom: 50px;
   }
 
