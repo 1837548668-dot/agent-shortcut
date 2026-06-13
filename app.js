@@ -1,6 +1,6 @@
 const STORAGE_KEY = "agent-shortcut-items-v1";
-const CORE_AGENT_COUNT = 8;
-const SPECIAL_TAGS = ["PLUS", "LIFE", "研究"];
+const CORE_AGENT_COUNT = 15;
+const SPECIAL_TAGS = ["PLUS", "VIDEO", "知识库", "顾问", "创作"];
 
 const defaultAgents = [
   { name: "全能问答", description: "日常问题与灵感", url: "https://chatgpt.com/" },
@@ -14,6 +14,15 @@ const defaultAgents = [
   { name: "运营策划", description: "活动、增长与执行计划", url: "https://gemini.google.com/" },
   { name: "生活顾问", description: "日程、清单与生活建议", url: "https://copilot.microsoft.com/" },
   { name: "深度研究", description: "搜索资料与整理来源", url: "https://www.perplexity.ai/" },
+  { name: "PPT 大师", description: "演示结构与视觉表达", url: "https://gamma.app/" },
+  { name: "财务助手", description: "预算、测算与经营分析", url: "https://chatgpt.com/" },
+  { name: "法务顾问", description: "合同审阅与风险提示", url: "https://chat.deepseek.com/" },
+  { name: "人才教练", description: "招聘、绩效与团队发展", url: "https://www.doubao.com/chat/" },
+  { name: "短视频导演", description: "选题、脚本与分镜创作", url: "https://www.capcut.cn/" },
+  { name: "视频生成", description: "创意视频与动态内容", url: "https://klingai.kuaishou.com/" },
+  { name: "企业知识库", description: "资料整理与知识问答", url: "https://notebooklm.google.com/" },
+  { name: "增长顾问", description: "商业增长与营销策略", url: "https://gemini.google.com/" },
+  { name: "品牌创作", description: "品牌视觉与传播创意", url: "https://www.canva.com/" },
 ];
 
 const coreList = document.querySelector("#coreList");
