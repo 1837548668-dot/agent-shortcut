@@ -1,7 +1,7 @@
 {
   "name": "AI星球",
   "short_name": "AI星球",
-  "description": "AI星球多智能体聊天应用",
+  "description": "AI星球智能体快捷导航",
   "lang": "zh-CN",
   "start_url": "./",
   "scope": "./",
