@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#ffffff" />
-    <meta name="description" content="AI星球智能体快捷导航。" />
+    <meta name="description" content="AI星球 OPC 智能体快捷导航。" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="AI星球" />
@@ -13,22 +13,14 @@
     <link rel="icon" href="./icons/ai-planet-192.png" type="image/png" />
     <link rel="apple-touch-icon" sizes="180x180" href="./icons/ai-planet-180.png" />
     <link rel="stylesheet" href="./styles.css" />
-    <title>AI星球</title>
+    <title>AI星球 · OPC智能体</title>
   </head>
   <body>
     <main class="app-shell">
-      <button class="manage-button" type="button" data-edit-agents>
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 20h9" />
-          <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4L16.5 3.5Z" />
-        </svg>
-        <span>编辑智能体</span>
-      </button>
-
       <header class="brand-hero">
         <img class="brand-icon" src="./icons/ai-planet-192.png" alt="AI星球" />
         <h1><span>AI</span> 星球</h1>
-        <p>智能体团队 · 点击进入</p>
+        <p>OPC 智能体团队 · 点击进入</p>
         <button class="ios-quick-install" id="iosQuickInstall" type="button" hidden>
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 15V3m0 0L8 7m4-4 4 4" />
@@ -43,17 +35,9 @@
       <section class="agent-section" aria-labelledby="coreTitle">
         <div class="section-heading">
           <h2 id="coreTitle">OPC 核心智能体</h2>
-          <span id="coreCount">15 位</span>
+          <span id="coreCount">10 位</span>
         </div>
         <div class="agent-list" id="coreList"></div>
-      </section>
-
-      <section class="agent-section agent-section--special" aria-labelledby="specialTitle">
-        <div class="section-heading">
-          <h2 id="specialTitle">专项智能体</h2>
-          <span id="specialCount">5 位</span>
-        </div>
-        <div class="agent-list" id="specialList"></div>
       </section>
 
       <section class="install-panel" id="installPanel">
@@ -66,30 +50,8 @@
 
       <footer class="page-footer">
         <p>AI 星球 <i></i> 点击任意智能体将在浏览器中打开</p>
-        <button class="edit-button" type="button" data-edit-agents>管理名称、简介与网址</button>
       </footer>
     </main>
-
-    <dialog class="edit-dialog" id="editDialog">
-      <form method="dialog" id="editForm">
-        <div class="sheet-handle" aria-hidden="true"></div>
-        <div class="dialog-header">
-          <div>
-            <span class="dialog-kicker">AI PLANET</span>
-            <h2>管理智能体</h2>
-            <p>修改名称会自动生成更有吸引力的技能简介</p>
-          </div>
-          <button class="close-button" value="cancel" aria-label="关闭" type="submit">×</button>
-        </div>
-
-        <div class="edit-list" id="editList"></div>
-
-        <div class="dialog-actions">
-          <button class="secondary-button" id="resetButton" type="button">恢复默认</button>
-          <button class="primary-button" value="default" type="submit">保存修改</button>
-        </div>
-      </form>
-    </dialog>
 
     <dialog class="ios-guide-dialog" id="iosInstallDialog">
       <form method="dialog">
