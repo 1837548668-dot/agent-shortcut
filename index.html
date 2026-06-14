@@ -84,6 +84,62 @@
       </form>
     </dialog>
 
+    <dialog class="ios-guide-dialog" id="iosInstallDialog">
+      <form method="dialog">
+        <button class="guide-close" value="cancel" aria-label="关闭安装教程" type="submit">×</button>
+        <img class="guide-app-icon" src="./icons/ai-planet-180.png" alt="" />
+        <span class="guide-kicker">IPHONE / IPAD</span>
+        <h2 id="iosGuideTitle">把 AI星球安装到桌面</h2>
+        <p class="guide-intro" id="iosGuideIntro">苹果手机无需下载文件，添加到主屏幕后即可像 App 一样打开。</p>
+
+        <div class="ios-browser-notice" id="iosBrowserNotice" hidden>
+          <strong>当前可能在微信或应用内浏览器</strong>
+          <span>请点击右上角菜单，选择“在 Safari 中打开”，再按照下方步骤操作。</span>
+        </div>
+
+        <ol class="install-steps">
+          <li>
+            <span class="step-number">1</span>
+            <span class="step-copy">
+              <strong>打开分享菜单</strong>
+              <span>点击 Safari 底部或顶部的分享按钮</span>
+            </span>
+            <span class="share-symbol" aria-label="分享图标">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 15V3m0 0L8 7m4-4 4 4" />
+                <path d="M7 10H5.8A2.8 2.8 0 0 0 3 12.8v5.4A2.8 2.8 0 0 0 5.8 21h12.4a2.8 2.8 0 0 0 2.8-2.8v-5.4a2.8 2.8 0 0 0-2.8-2.8H17" />
+              </svg>
+            </span>
+          </li>
+          <li>
+            <span class="step-number">2</span>
+            <span class="step-copy">
+              <strong>选择“添加到主屏幕”</strong>
+              <span>如果没看到，请滑到最底部点“编辑操作”添加</span>
+            </span>
+          </li>
+          <li>
+            <span class="step-number">3</span>
+            <span class="step-copy">
+              <strong>打开“作为网页 App 打开”</strong>
+              <span>最后点击右上角“添加”，桌面会出现 AI星球图标</span>
+            </span>
+          </li>
+        </ol>
+
+        <div class="guide-actions">
+          <button class="copy-link-button" id="copyInstallLink" type="button">复制网址</button>
+          <button class="guide-done-button" value="default" type="submit">我知道了</button>
+        </div>
+        <a
+          class="apple-guide-link"
+          href="https://support.apple.com/guide/iphone/open-as-web-app-iphea86e5236/ios"
+          target="_blank"
+          rel="noopener noreferrer"
+        >查看苹果官方教程</a>
+      </form>
+    </dialog>
+
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
     <script src="./app.js"></script>

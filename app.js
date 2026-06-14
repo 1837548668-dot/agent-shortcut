@@ -38,6 +38,9 @@ const installButton = document.querySelector("#installButton");
 const installPanel = document.querySelector("#installPanel");
 const installTitle = document.querySelector("#installTitle");
 const installDescription = document.querySelector("#installDescription");
+const iosInstallDialog = document.querySelector("#iosInstallDialog");
+const iosBrowserNotice = document.querySelector("#iosBrowserNotice");
+const copyInstallLink = document.querySelector("#copyInstallLink");
 const toast = document.querySelector("#toast");
 
 let deferredInstallPrompt = null;
@@ -47,13 +50,16 @@ const isIOS =
   (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
 const isAndroid = /Android/i.test(navigator.userAgent);
 const isDesktop = !isIOS && !isAndroid && !("ontouchstart" in window);
+const isIOSInAppBrowser =
+  isIOS && /MicroMessenger|Weibo|DingTalk|Lark|Feishu|QQ\//i.test(navigator.userAgent);
 
 if (window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true) {
   installPanel.hidden = true;
 } else if (isIOS) {
-  installTitle.textContent = "添加到 iPhone 或 iPad 主屏幕";
-  installDescription.textContent = "在 Safari 分享菜单中选择“添加到主屏幕”";
-  installButton.textContent = "方法";
+  installPanel.classList.add("install-panel--ios");
+  installTitle.textContent = "在苹果手机上安装 AI星球";
+  installDescription.textContent = "无需 App Store，3 步添加到主屏幕";
+  installButton.textContent = "安装教程";
 } else if (isAndroid) {
   installTitle.textContent = "添加到安卓桌面";
   installDescription.textContent = "手机和平板均可像 App 一样打开";
@@ -241,7 +247,8 @@ window.addEventListener("beforeinstallprompt", (event) => {
 
 installButton.addEventListener("click", async () => {
   if (isIOS) {
-    showToast("Safari：点击分享按钮，再选择“添加到主屏幕”");
+    iosBrowserNotice.hidden = !isIOSInAppBrowser;
+    iosInstallDialog.showModal();
     return;
   }
 
@@ -258,6 +265,15 @@ installButton.addEventListener("click", async () => {
   await deferredInstallPrompt.userChoice;
   deferredInstallPrompt = null;
   installPanel.hidden = true;
+});
+
+copyInstallLink.addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText(window.location.href);
+    showToast("网址已复制，请在 Safari 中打开");
+  } catch {
+    showToast("请复制浏览器地址栏中的网址");
+  }
 });
 
 window.addEventListener("appinstalled", () => {

@@ -283,6 +283,17 @@ a {
   background: #fafbfd;
 }
 
+.install-panel--ios {
+  border-color: rgba(63, 126, 224, 0.18);
+  background:
+    linear-gradient(135deg, rgba(237, 245, 255, 0.96), rgba(249, 252, 255, 0.98));
+  box-shadow: 0 12px 32px rgba(40, 100, 190, 0.08);
+}
+
+.install-panel--ios .install-button {
+  background: #1677e8;
+}
+
 .install-copy strong,
 .install-copy span {
   display: block;
@@ -352,6 +363,210 @@ a {
   color: var(--navy);
   background: #f8f9fb;
   box-shadow: 0 28px 90px rgba(9, 19, 35, 0.28);
+}
+
+.ios-guide-dialog {
+  width: min(calc(100% - 28px), 480px);
+  max-height: min(92vh, 760px);
+  padding: 0;
+  border: 0;
+  border-radius: 30px;
+  color: var(--navy);
+  background: #fff;
+  box-shadow: 0 30px 100px rgba(9, 19, 35, 0.3);
+}
+
+.ios-guide-dialog::backdrop {
+  background: rgba(8, 18, 34, 0.48);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.ios-guide-dialog form {
+  position: relative;
+  padding: 30px 24px 24px;
+  text-align: center;
+}
+
+.guide-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  padding: 0 0 2px;
+  border: 0;
+  border-radius: 50%;
+  color: #7d8ba0;
+  background: #eef2f6;
+  cursor: pointer;
+  font-size: 24px;
+  font-weight: 300;
+}
+
+.guide-app-icon {
+  display: block;
+  width: 78px;
+  height: 78px;
+  margin: 0 auto 15px;
+  border-radius: 19px;
+  box-shadow: 0 13px 30px rgba(15, 31, 56, 0.18);
+}
+
+.guide-kicker {
+  color: #3885df;
+  font-size: 10px;
+  font-weight: 760;
+  letter-spacing: 0.16em;
+}
+
+.ios-guide-dialog h2 {
+  margin: 7px 0 8px;
+  color: #14233d;
+  font-size: 25px;
+  letter-spacing: -0.035em;
+}
+
+.guide-intro {
+  max-width: 360px;
+  margin: 0 auto 20px;
+  color: #7e8ba0;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.ios-browser-notice {
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  border: 1px solid #f0cf8c;
+  border-radius: 14px;
+  text-align: left;
+  background: #fff9eb;
+}
+
+.ios-browser-notice strong,
+.ios-browser-notice span {
+  display: block;
+}
+
+.ios-browser-notice strong {
+  color: #8a641b;
+  font-size: 12px;
+}
+
+.ios-browser-notice span {
+  margin-top: 4px;
+  color: #9b7a3b;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.install-steps {
+  display: grid;
+  gap: 10px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  text-align: left;
+}
+
+.install-steps li {
+  display: grid;
+  min-height: 68px;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 11px;
+  padding: 11px 13px;
+  border: 1px solid #e7ebf1;
+  border-radius: 16px;
+  background: #fafbfd;
+}
+
+.step-number {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  background: #1677e8;
+  font-size: 13px;
+  font-weight: 720;
+}
+
+.step-copy strong,
+.step-copy span {
+  display: block;
+}
+
+.step-copy strong {
+  color: #263750;
+  font-size: 13px;
+}
+
+.step-copy span {
+  margin-top: 3px;
+  color: #8c99ac;
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+.share-symbol {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border-radius: 12px;
+  color: #1677e8;
+  background: #eaf3ff;
+}
+
+.share-symbol svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.7;
+}
+
+.guide-actions {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.copy-link-button,
+.guide-done-button {
+  min-height: 46px;
+  border-radius: 13px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 680;
+}
+
+.copy-link-button {
+  border: 1px solid #dfe5ed;
+  color: #64748a;
+  background: #f8fafc;
+}
+
+.guide-done-button {
+  border: 0;
+  color: #fff;
+  background: #1677e8;
+}
+
+.apple-guide-link {
+  display: inline-block;
+  margin-top: 16px;
+  color: #7c8ba1;
+  font-size: 11px;
+  text-decoration: none;
 }
 
 .edit-dialog::backdrop {
@@ -676,7 +891,8 @@ a {
 }
 
 @media (max-width: 559px) {
-  .edit-dialog {
+  .edit-dialog,
+  .ios-guide-dialog {
     position: fixed;
     inset: auto 0 0;
     width: 100%;
@@ -688,6 +904,10 @@ a {
 
   .edit-dialog form {
     padding-bottom: max(18px, env(safe-area-inset-bottom));
+  }
+
+  .ios-guide-dialog form {
+    padding-bottom: max(24px, env(safe-area-inset-bottom));
   }
 }
 
