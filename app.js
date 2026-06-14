@@ -38,6 +38,7 @@ const installButton = document.querySelector("#installButton");
 const installPanel = document.querySelector("#installPanel");
 const installTitle = document.querySelector("#installTitle");
 const installDescription = document.querySelector("#installDescription");
+const iosQuickInstall = document.querySelector("#iosQuickInstall");
 const iosInstallDialog = document.querySelector("#iosInstallDialog");
 const iosBrowserNotice = document.querySelector("#iosBrowserNotice");
 const copyInstallLink = document.querySelector("#copyInstallLink");
@@ -56,6 +57,7 @@ const isIOSInAppBrowser =
 if (window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true) {
   installPanel.hidden = true;
 } else if (isIOS) {
+  iosQuickInstall.hidden = false;
   installPanel.classList.add("install-panel--ios");
   installTitle.textContent = "在苹果手机上安装 AI星球";
   installDescription.textContent = "无需 App Store，3 步添加到主屏幕";
@@ -245,10 +247,16 @@ window.addEventListener("beforeinstallprompt", (event) => {
   installPanel.hidden = false;
 });
 
+function openIOSInstallGuide() {
+  iosBrowserNotice.hidden = !isIOSInAppBrowser;
+  iosInstallDialog.showModal();
+}
+
+iosQuickInstall.addEventListener("click", openIOSInstallGuide);
+
 installButton.addEventListener("click", async () => {
   if (isIOS) {
-    iosBrowserNotice.hidden = !isIOSInAppBrowser;
-    iosInstallDialog.showModal();
+    openIOSInstallGuide();
     return;
   }
 
