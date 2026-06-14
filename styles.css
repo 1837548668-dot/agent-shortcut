@@ -231,12 +231,6 @@ a {
   transform: scale(0.982);
 }
 
-.agent-row:focus-visible {
-  border-color: rgba(202, 165, 87, 0.9);
-  outline: 3px solid rgba(202, 165, 87, 0.28);
-  outline-offset: 3px;
-}
-
 .agent-badge {
   display: grid;
   min-width: 80px;
