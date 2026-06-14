@@ -2,6 +2,47 @@ const STORAGE_KEY = "agent-shortcut-items-v1";
 const CORE_AGENT_COUNT = 15;
 const SPECIAL_TAGS = ["PLUS", "VIDEO", "知识库", "顾问", "创作"];
 
+const descriptionRules = [
+  [["写书", "图书", "出版", "陪跑"], "从选题到成稿全程陪跑，让经验变成作品"],
+  [["IP", "定位", "个人品牌"], "找准差异化定位，让个人品牌更值钱"],
+  [["总裁", "决策", "战略"], "梳理关键变量，帮助你做出更稳决策"],
+  [["转型", "副业", "个体"], "找到转型路径，把能力变成持续收入"],
+  [["克隆", "思维"], "沉淀经验方法，让优秀思路可以复制"],
+  [["命理", "风水", "易经"], "梳理关键方向，让每次选择更清晰"],
+  [["问答", "全能", "百科"], "复杂问题快速说清，马上给出行动答案"],
+  [["文案", "写作", "标题", "脚本"], "把想法写成高转化内容，表达更有说服力"],
+  [["学习", "课程", "教学", "教练", "造课"], "拆解难点规划路径，让学习更快见效"],
+  [["数据", "分析", "表格", "报表"], "从数据发现机会，帮你做对关键决策"],
+  [["会议", "纪要", "总结", "复盘"], "提炼重点行动清单，让沟通真正有结果"],
+  [["图片", "绘图", "视觉", "设计", "海报"], "快速产出吸睛创意，让作品更出彩"],
+  [["翻译", "语言", "英文", "英语"], "准确传达语气含义，让沟通更专业"],
+  [["编程", "代码", "开发", "技术", "程序"], "快速写代码查问题，让开发效率翻倍"],
+  [["运营", "营销", "增长", "推广", "流量"], "找到增长抓手，给你能落地的方案"],
+  [["生活", "日程", "健康", "习惯"], "轻松规划生活，每天更有掌控感"],
+  [["研究", "搜索", "调研", "资料"], "搜集可靠信息，帮你看清问题全貌"],
+  [["PPT", "演示", "汇报", "幻灯片"], "打造高质量汇报，让观点更有影响力"],
+  [["财务", "预算", "利润", "经营"], "看懂关键数字，帮你控风险提利润"],
+  [["法务", "合同", "法律", "合规"], "提前发现合同风险，让决策更安心"],
+  [["人才", "招聘", "绩效", "团队", "HR"], "提升招聘管理质量，打造高效团队"],
+  [["视频", "导演", "剪辑", "分镜", "口播", "宣传片"], "选题到成片全程提效，让内容更出圈"],
+  [["知识库", "文档", "档案"], "资料随问随答，让知识持续复用"],
+  [["品牌", "创意", "传播"], "打造鲜明品牌，让客户一眼记住你"],
+  [["销售", "成交", "客户", "销冠"], "看懂客户需求，帮助你更快成交"],
+];
+
+function generateDescription(name) {
+  const displayName = String(name || "").trim();
+  const normalizedName = displayName.toLocaleLowerCase();
+  if (!displayName) {
+    return "把复杂任务变简单，帮助你更快拿到结果";
+  }
+
+  const matchedRule = descriptionRules.find(([keywords]) =>
+    keywords.some((keyword) => normalizedName.includes(keyword.toLocaleLowerCase())),
+  );
+  return matchedRule?.[1] || `让${displayName}帮你理清问题，更快拿到结果`;
+}
+
 const defaultAgents = [
   { name: "全能问答", description: "日常问题与灵感", url: "https://chatgpt.com/" },
   { name: "文案助手", description: "文章、标题与脚本", url: "https://www.doubao.com/chat/" },
@@ -23,7 +64,7 @@ const defaultAgents = [
   { name: "企业知识库", description: "资料整理与知识问答", url: "https://notebooklm.google.com/" },
   { name: "增长顾问", description: "商业增长与营销策略", url: "https://gemini.google.com/" },
   { name: "品牌创作", description: "品牌视觉与传播创意", url: "https://www.canva.com/" },
-];
+].map((agent) => ({ ...agent, description: generateDescription(agent.name) }));
 
 const coreList = document.querySelector("#coreList");
 const specialList = document.querySelector("#specialList");
@@ -81,6 +122,9 @@ function loadAgents() {
     return defaultAgents.map((defaultAgent, index) => ({
       ...defaultAgent,
       name: stored[index]?.name || defaultAgent.name,
+      description:
+        stored[index]?.description ||
+        generateDescription(stored[index]?.name || defaultAgent.name),
       url: stored[index]?.url || defaultAgent.url,
     }));
   } catch {
@@ -110,6 +154,7 @@ function createAgentRow(agent, index) {
 
   const description = document.createElement("span");
   description.textContent = agent.description;
+  description.title = agent.description;
 
   copy.append(name, description);
 
@@ -162,6 +207,35 @@ function renderEditor() {
       nameInput.required = true;
       nameLabel.append(nameInput);
 
+      const descriptionLabel = document.createElement("label");
+      descriptionLabel.className = "field";
+
+      const descriptionCaption = document.createElement("span");
+      descriptionCaption.className = "field-caption";
+      descriptionCaption.textContent = "技能简介";
+
+      const generateButton = document.createElement("button");
+      generateButton.className = "generate-description-button";
+      generateButton.type = "button";
+      generateButton.textContent = "根据名称生成";
+      descriptionCaption.append(generateButton);
+
+      const descriptionInput = document.createElement("input");
+      descriptionInput.name = `description-${index}`;
+      descriptionInput.value = agent.description || generateDescription(agent.name);
+      descriptionInput.maxLength = 36;
+      descriptionInput.required = true;
+      descriptionInput.placeholder = "说明这个技能能帮用户获得什么结果";
+      descriptionLabel.append(descriptionCaption, descriptionInput);
+
+      const refreshDescription = () => {
+        descriptionInput.value = generateDescription(nameInput.value);
+        title.textContent = nameInput.value.trim() || `智能体 ${index + 1}`;
+      };
+
+      nameInput.addEventListener("input", refreshDescription);
+      generateButton.addEventListener("click", refreshDescription);
+
       const urlLabel = document.createElement("label");
       urlLabel.className = "field";
       urlLabel.innerHTML = "<span>跳转网址</span>";
@@ -177,7 +251,7 @@ function renderEditor() {
       urlInput.required = true;
       urlLabel.append(urlInput);
 
-      item.append(header, nameLabel, urlLabel);
+      item.append(header, nameLabel, descriptionLabel, urlLabel);
       return item;
     }),
   );
@@ -206,6 +280,7 @@ editForm.addEventListener("submit", (event) => {
   const nextAgents = agents.map((agent, index) => ({
     ...agent,
     name: String(formData.get(`name-${index}`) || "").trim(),
+    description: String(formData.get(`description-${index}`) || "").trim(),
     url: String(formData.get(`url-${index}`) || "").trim(),
   }));
 
@@ -226,11 +301,11 @@ editForm.addEventListener("submit", (event) => {
   agents = nextAgents;
   localStorage.setItem(
     STORAGE_KEY,
-    JSON.stringify(agents.map(({ name, url }) => ({ name, url }))),
+    JSON.stringify(agents.map(({ name, description, url }) => ({ name, description, url }))),
   );
   renderAgents();
   editDialog.close();
-  showToast("网址已保存，点击卡片即可打开");
+  showToast("名称、简介和网址已保存");
 });
 
 resetButton.addEventListener("click", () => {
